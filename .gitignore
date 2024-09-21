@@ -1,24 +1,26 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# dependencies
+**/node_modules
 
-node_modules
-dist
-dist-ssr
-*.local
+# testing
+**/coverage
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# build
+**/dist
+**/build
+**/dist-zip
+
+# env
+**/.env.*
+**/.env
+
+# etc
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+.idea
+**/.turbo
+
+# compiled
+chrome-extension/public/manifest.json
+**/tailwind-output.css
+
+# vite timestamp (because of bug from lib, remove it after fix will have been realased)
+**/vite.config.mts.timestamp-*

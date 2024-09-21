@@ -1,29 +1,77 @@
 {
-  "name": "github-todo",
-  "private": true,
-  "version": "0.0.0",
+  "name": "github-todo-extension",
+  "version": "0.0.1",
+  "description": "A GitHub Todo Extension",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RSS1102/github-todo-extension"
+  },
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "clean:bundle": "rimraf dist && rimraf dist-zip && turbo clean:bundle",
+    "clean:node_modules": "turbo daemon stop && pnpx rimraf node_modules && pnpx turbo clean:node_modules",
+    "clean:turbo": "turbo daemon stop && rimraf .turbo && turbo clean:turbo",
+    "clean": "pnpm clean:bundle && pnpm clean:turbo && pnpm clean:node_modules",
+    "clean:install": "pnpm clean:node_modules && pnpm install --frozen-lockfile",
+    "build": "pnpm clean:bundle && turbo ready && turbo build",
+    "build:firefox": "pnpm clean:bundle && turbo ready && cross-env __FIREFOX__=true turbo build",
+    "zip": "pnpm build && pnpm -F zipper zip",
+    "zip:firefox": "pnpm build:firefox && cross-env __FIREFOX__=true pnpm -F zipper zip",
+    "dev": "turbo ready && cross-env __DEV__=true turbo watch dev --concurrency 20",
+    "dev:firefox": "turbo ready && cross-env __DEV__=true __FIREFOX__=true turbo watch dev --concurrency 20",
+    "e2e": "pnpm build && pnpm zip && turbo e2e",
+    "e2e:firefox": "pnpm build:firefox && pnpm zip:firefox && cross-env __FIREFOX__=true turbo e2e",
+    "type-check": "turbo type-check",
+    "lint": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
+    "lint:fix": "turbo lint:fix --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
+    "prettier": "turbo prettier --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
+    "prepare": "husky",
+    "update-version": "run-script-os",
+    "update-version:win32": "bash update_version.sh",
+    "update-version:default": "./update_version.sh"
   },
   "dependencies": {
-    "@types/node": "^20.5.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "@vitejs/plugin-react": "^4.0.3",
-    "eslint": "^8.45.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3",
-    "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "@types/chrome": "^0.0.270",
+    "@types/node": "^20.16.5",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "autoprefixer": "^10.4.20",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.23.0",
+    "eslint": "8.57.0",
+    "eslint-config-airbnb-typescript": "18.0.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-import": "2.29.1",
+    "eslint-plugin-jsx-a11y": "6.9.0",
+    "eslint-plugin-prettier": "5.2.1",
+    "eslint-plugin-react": "7.35.0",
+    "eslint-plugin-react-hooks": "4.6.2",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.7",
+    "postcss": "^8.4.47",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
+    "tailwindcss": "^3.4.11",
+    "tslib": "^2.6.3",
+    "turbo": "^2.0.12",
+    "typescript": "5.5.4",
+    "vite": "5.4.3",
+    "run-script-os": "^1.1.6"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json}": [
+      "prettier --write"
+    ]
+  },
+  "packageManager": "pnpm@9.9.0",
+  "engines": {
+    "node": ">=18.19.1"
   }
 }
