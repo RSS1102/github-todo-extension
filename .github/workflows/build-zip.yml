@@ -2,7 +2,7 @@ name: Build And Upload Extension Zip Via Artifact
 
 on:
   push:
-    branches: [ main ]
+    branches: [  release ]
   pull_request:
 
 jobs:
@@ -25,3 +25,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: dist/*
+          retention-days: 7
