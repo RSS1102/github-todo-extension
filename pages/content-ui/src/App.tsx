@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import closedIcon from '../public/closed.svg';
 import openedIcon from '../public/opened.svg';
+import Tabs from './components/Tabs';
 
 const App: React.FC = () => {
   const [hovered, setHovered] = useState(false);
@@ -18,6 +19,12 @@ const App: React.FC = () => {
     }
   };
 
+  const tabs = [
+    { title: 'Tab 1', content: <div>Content 1</div> },
+    { title: 'Tab 2', content: <div>Content 2</div> },
+    { title: 'Tab 3', content: <div>Content 3</div> },
+  ];
+
   // todo 点击图标也有图标颜色切换(三种颜色标记)
   return (
     <div
@@ -27,11 +34,15 @@ const App: React.FC = () => {
         top-10 
         cursor-pointer 
         transition-transform 
-        bg-red-200
+        bg-red-300
         duration-500 
         hover:translate-x-[-30px] 
         w-[100px]
+        h-[33px]
         rounded-l-full
+        shadow-lg
+        border
+        border-red-400
       "
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -45,7 +56,12 @@ const App: React.FC = () => {
           alt="List"
           className={`ml-3 transition-transform duration-500 ${hovered ? 'rotate-180' : 'rotate-0'}`}
         />
-        {hovered && <div className="absolute top-10px left-0">222</div>}
+        {hovered && (
+          <div className="absolute top-10px ">
+            {' '}
+            <Tabs tabs={tabs} />
+          </div>
+        )}
       </div>
     </div>
   );
